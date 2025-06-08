@@ -1,34 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Welcome</title>
-    <style>
-        body {
-            background-color: #111;
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            padding-top: 100px;
-        }
-        h1 {
-            font-size: 40px;
-        }
-        .btn {
-            margin-top: 30px;
-            background-color: #00c853;
-            padding: 15px 30px;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-<h1>Welcome, <span th:text="${#authentication.name}"></span>!</h1>
-<a th:href="@{/products}">
-    <button class="btn">View Products</button>
-</a>
+<h1>Welcome, <span th:text="${#authentication.name}">User</span>!</h1>
+
+<p>
+    <a th:href="@{/products}">
+        View Products →
+    </a>
+</p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>

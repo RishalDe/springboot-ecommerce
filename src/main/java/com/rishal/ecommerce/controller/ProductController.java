@@ -18,15 +18,24 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public String showProducts(@RequestParam(required = false) String keyword, Model model) {
+    public String showProducts(
+            @RequestParam(required = false) String keyword,
+            Model model
+    ) {
         List<Product> products = productService.getAllProducts();
 
-        if (keyword != null && !keyword.isEmpty()) {
-            String lowerKeyword = keyword.toLowerCase();
+        if (keyword != null && !keyword.isBlank()) {
+            String lower = keyword.toLowerCase();
             products = products.stream()
-                    .filter(p -> p.getName().toLowerCase().contains(lowerKeyword) ||
-                            p.getDescription().toLowerCase().contains(lowerKeyword))
+                    .filter(p ->
+                            p.getName().toLowerCase().contains(lower) ||
+                                    p.getDescription().toLowerCase().contains(lower)
+                    )
                     .collect(Collectors.toList());
+            if (products.isEmpty()) {
+                model.addAttribute("message",
+                        "No results found for \"" + keyword + "\"");
+            }
         }
 
         model.addAttribute("products", products);
