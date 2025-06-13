@@ -1,14 +1,12 @@
-# Use a Java 17 image with Maven pre-installed
-FROM maven:3.9.4-eclipse-temurin-17
-
-# Set working directory
+# Use official Maven image to build the app
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 WORKDIR /app
-
-# Copy everything to container
 COPY . .
-
-# Package the Spring Boot app (skipping tests)
 RUN mvn clean package -DskipTests
 
-# Run the app
-CMD ["java", "-jar", "target/*.jar"]
+# Use a lighter JDK image to run the app
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
