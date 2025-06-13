@@ -1,11 +1,14 @@
-FROM eclipse-temurin:17-jdk
+# Use a Java 17 image with Maven pre-installed
+FROM maven:3.9.4-eclipse-temurin-17
 
+# Set working directory
 WORKDIR /app
 
-COPY . /app
+# Copy everything to container
+COPY . .
 
-RUN ./mvnw clean package -DskipTests
+# Package the Spring Boot app (skipping tests)
+RUN mvn clean package -DskipTests
 
-EXPOSE 8080
-
-CMD ["java", "-jar", "target/ecommerce-0.0.1-SNAPSHOT.jar"]
+# Run the app
+CMD ["java", "-jar", "target/*.jar"]
